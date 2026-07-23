@@ -1,0 +1,7 @@
+# Mengabaikan semua folder node_modules
+node_modules/
+*/node_modules/
+
+# Mengabaikan file konfigurasi rahasia
+.env
+*/.env
