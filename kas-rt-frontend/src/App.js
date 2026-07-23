@@ -8,51 +8,48 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 
-// Import semua halaman yang sudah kita buat
 import Transactions from "./pages/Transactions";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard"; // <-- Halaman Dashboard yang baru diimpor di sini
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  // 1. State untuk menyimpan data profil pengguna yang login
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 2. Mengecek status login setiap kali aplikasi pertama kali dimuat
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/current_user", {
-          withCredentials: true, // Wajib agar cookie/session Google ikut terkirim
-        });
+        const res = await axios.get(
+          "https://kas-rt-api-three.vercel.app/api/current_user",
+          {
+            withCredentials: true,
+          },
+        );
 
-        // Jika backend mengembalikan data yang memiliki _id, berarti user berhasil login
         if (res.data && res.data._id) {
           setUser(res.data);
         }
       } catch (error) {
         console.error("Error fetching user", error);
       } finally {
-        setLoading(false); // Selesai loading, tampilkan halaman
+        setLoading(false);
       }
     };
     fetchUser();
   }, []);
 
-  // 3. Fungsi untuk Logout
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:5000/api/logout", {
+      await axios.get("https://kas-rt-api-three.vercel.app/api/logout", {
         withCredentials: true,
       });
       setUser(null);
-      window.location.href = "/login"; // Refresh dan kembalikan ke halaman login
+      window.location.href = "/login";
     } catch (error) {
       console.error("Gagal logout", error);
     }
   };
 
-  // Tampilkan layar putih/loading sementara aplikasi mengecek session ke backend
   if (loading)
     return (
       <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
@@ -63,7 +60,6 @@ function App() {
   return (
     <Router>
       <div style={{ fontFamily: "sans-serif" }}>
-        {/* ================= NAVBAR DINAMIS ================= */}
         <nav
           style={{
             background: "#333",
@@ -74,7 +70,6 @@ function App() {
             alignItems: "center",
           }}
         >
-          {/* Menu Sebelah Kiri */}
           <div style={{ display: "flex", gap: "20px" }}>
             <Link
               to="/"
@@ -86,8 +81,6 @@ function App() {
             >
               Dashboard
             </Link>
-
-            {/* Menu Data Transaksi HANYA muncul jika 'user' tidak aktif (sudah login) */}
             {user && (
               <Link
                 to="/transactions"
@@ -102,7 +95,6 @@ function App() {
             )}
           </div>
 
-          {/* Menu Sebelah Kanan (Profil / Tombol Login) */}
           <div>
             {user ? (
               <div
@@ -150,18 +142,12 @@ function App() {
           </div>
         </nav>
 
-        {/* ================= SISTEM PROTEKSI RUTE (ROUTES) ================= */}
         <Routes>
-          {/* Rute ini sekarang memanggil komponen Dashboard yang ada di pages/Dashboard.js */}
           <Route path="/" element={<Dashboard />} />
-
-          {/* Jika belum login, 'user' bernilai null, maka Navigate akan melemparnya ke halaman /login */}
           <Route
             path="/transactions"
             element={user ? <Transactions /> : <Navigate to="/login" />}
           />
-
-          {/* Mencegah orang yang sudah login masuk ke halaman login lagi */}
           <Route
             path="/login"
             element={user ? <Navigate to="/" /> : <Login />}

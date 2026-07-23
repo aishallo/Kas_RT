@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// Import komponen Chart.js
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
-// Registrasi elemen Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
@@ -15,7 +13,7 @@ const Dashboard = () => {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/transactions",
+          "https://kas-rt-api-three.vercel.app/api/transactions",
           {
             withCredentials: true,
           },
@@ -47,13 +45,12 @@ const Dashboard = () => {
     }).format(angka);
   };
 
-  // Konfigurasi Data untuk Grafik Donat
   const dataGrafik = {
     labels: ["Pemasukan", "Pengeluaran"],
     datasets: [
       {
         data: [totalPemasukan, totalPengeluaran],
-        backgroundColor: ["#28a745", "#dc3545"], // Hijau untuk Pemasukan, Merah untuk Pengeluaran
+        backgroundColor: ["#28a745", "#dc3545"],
         hoverBackgroundColor: ["#218838", "#c82333"],
         borderWidth: 0,
       },
@@ -68,7 +65,14 @@ const Dashboard = () => {
     );
 
   return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
+    <div
+      style={{
+        padding: "20px",
+        fontFamily: "sans-serif",
+        maxWidth: "900px",
+        margin: "0 auto",
+      }}
+    >
       <h1>Dashboard Kas RT</h1>
       <p style={{ color: "#666", marginBottom: "30px" }}>
         Ringkasan arus kas dan kesehatan finansial lingkungan RT Anda.
@@ -140,7 +144,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Bagian Menampilkan Grafik */}
       <div
         style={{
           width: "100%",

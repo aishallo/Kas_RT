@@ -1,42 +1,38 @@
 import React from "react";
 
 const Login = () => {
-  const handleLogin = () => {
-    // Mengarahkan browser ke rute Google OAuth di backend
-    window.location.href = "http://localhost:5000/auth/google";
+  const handleGoogleLogin = () => {
+    // Mengarahkan ke backend Vercel untuk autentikasi Google OAuth
+    window.location.href = "https://kas-rt-api-three.vercel.app/auth/google";
   };
 
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "80vh",
+        textAlign: "center",
+        marginTop: "100px",
         fontFamily: "sans-serif",
       }}
     >
-      <h2>Selamat Datang di Sistem Kas RT</h2>
-      <p style={{ marginBottom: "30px" }}>
-        Silakan login menggunakan akun Google Anda untuk melanjutkan.
+      <h2>Silakan Login Terlebih Dahulu</h2>
+      <p style={{ color: "#666", marginBottom: "30px" }}>
+        Aplikasi Pengelolaan Kas RT - Universitas Paramadina
       </p>
-
       <button
-        onClick={handleLogin}
+        onClick={handleGoogleLogin}
         style={{
-          padding: "12px 24px",
-          fontSize: "16px",
-          fontWeight: "bold",
-          backgroundColor: "#4285F4",
+          background: "#4285F4",
           color: "white",
           border: "none",
-          borderRadius: "4px",
+          padding: "12px 24px",
+          fontSize: "16px",
+          borderRadius: "6px",
           cursor: "pointer",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+          fontWeight: "bold",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
         }}
       >
-        Login dengan Google
+        Login dengan Akun Google
       </button>
     </div>
   );
